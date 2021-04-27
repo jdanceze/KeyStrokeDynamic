@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Admin page</title>
+</head>
+
+<body>
+
+    <div class="header">
+        <h1>MANAGE PAGE</h1>
+    </div>
+
+
+
+    <!--The web interface-->
+    <div class="container">
+        <!-- Navigation Bar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">Admin</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- Link in Navigation Bar -->
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Main <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/log">Login Log</a>
+                    </li>
+                </ul>
+
+                <!-- Drop down Navigation Bar -->
+                <ul class="navbar-nav my-2 my-lg-0">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            @<%=user.username %>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <span class="dropdown-item">
+                                <small>
+                                    <%=user.email %>
+                                </small>
+                            </span>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/logout" onclick="return confirm('Logout ?')">logout</a>
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+        </nav>
+        <!-- Form to add the user-->
+        <h1>Admin page</h1>
+        <div class="mb-4 card">
+            <!-- <form class="card-body" action="/create" method="post"> -->
+                
+                <% if (Uinvalid){ %>
+                    <div class="alert alert-danger" role="alert">
+                        Invalid username
+                    </div>
+                    <script>
+                        window.history.pushState({}, "", window.location.pathname)
+                    </script>
+                    <% } %>
+                        <div class="form-group">
+                            <label for="input-title">Username</label>
+                            <input type="text" class="form-control" id="input-username" name="username">
+                        </div>
+                        <div class="form-group">
+                            <label for="input-title">Password</label>
+                            <input type="password" class="form-control" id="input-password" name="password">
+                        </div>
+                        <div id="label"></div>
+                        <div class="form-group">
+                            <label for="input-title">Role</label><br>
+                            <select id="user-role">
+                                <option value="0">User</option>
+                                <option value="1">Admin</option>
+                            </select>
+                        </div>
+            
+                        <button type="submit" id = "Add" class="btn btn-primary">Add New User</button>
+            <!-- </form> -->
+        </div>
+
+        <!-- User list section-->
+        <div id="user-list" class="list-group">
+            <h3>User list</h3>
+            <!-- User list -->
+            <% for(let user of userList){ %>
+                <a href="/detail/<%=user.id%>"
+                    class="list-group-item list-group-item-action flex-column align-items-start">
+                    <h4 class="mb-1">
+                        <%= user.username %> (ID: <%= user.id %>)
+                    </h4>
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">
+                            <%= user.first_name %>
+                                <%= user.last_name %>
+                        </h5>
+                        <small>
+                            <%= user.role==1 ? 'Admin' : 'User' %>
+                        </small>
+                    </div>
+                </a>
+                <% } %>
+        </div>
+    </div>
+
+
+    <!--Addition JavaScript-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/axios@0.21.1/dist/axios.min.js" async type="text/javascript"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            var startTime = false, endTime;
+
+            let stack = [];
+            let start = [];
+            let end = [];
+
+            $("#input-password").keydown(function (event) {
+                if ((event.which >= 48 && event.which <= 90) || (event.which >= 96 && event.keyCode <= 111) || (event.which >= 186 && event.which <= 222)) {
+                    startTime = $.now();
+                    start.push({
+                        [`${event.key}`]: startTime
+                    });
+                    console.log("Start: " + JSON.stringify(start));
+                } else if (event.which === 8 || event.which === 46) {
+                    start.pop();
+                    console.log("Start: " + JSON.stringify(start));
+                }
+            });
+
+            $("#input-password").keyup(function (event) {
+                if ((event.which >= 48 && event.which <= 90) || (event.which >= 96 && event.keyCode <= 111) || (event.which >= 186 && event.which <= 222)) {
+                    endTime = $.now();
+                    end.push({
+                        [`${event.key}`]: endTime
+                    });
+                    console.log("End: " + JSON.stringify(end));
+                } else if (event.which === 8 || event.which === 46) {
+                    end.pop();
+                    console.log("End: " + JSON.stringify(end));
+                }
+            });
+
+            $("#Add").click(async (event) => {
+                const username = $('#input-username').val()
+                const password = $('#input-password').val()
+                const role = Number($('#user-role').val())
+
+                const payload = {
+                        role,
+                        username,
+                        password,
+                        keyup_time: start,
+                        keydown_time: end,
+                }
+
+                console.debug({ payload })
+
+                try {
+                    await axios.post('/create', payload)
+                    window.location.reload()
+                } catch (e) {
+                    const data = e.response.data
+                    window.location = data.redirect
+                }
+            });
+    
+        });
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title>Detail</title>
+</head>
+
+<body>
+    <!--The web interface-->
+    <div class="container">
+        <a href="/admin" class="mb-4">&lt;back</a>
+        <h1>
+            User ID: <%= id %>
+                
+        </h1>
+        <h3>
+            Username: <%= username %>
+        </h3>
+        <h3>
+            <%if (role==0) {%>
+                Role: User
+                <%} else {%>
+                   Role: Admin
+                    <% } %>
+            <script>
+                window.history.pushState({}, "", window.location.pathname)
+            </script>
+        </h3>
+
+        <!--Delete button-->
+        <div class="row">
+            <form class="col" action="/delete" method="post">
+                <input type="hidden" name="id" value="<%= id%>">
+                <button onclick="return confirm('Remove This User?')" type="submit" class="btn btn-danger">Remove
+                    User</button>
+
+            </form>
+
+        </div>
+
+
+    </div>
+
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    
+
+
+</body>
+
+</html>

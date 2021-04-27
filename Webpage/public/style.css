@@ -1,0 +1,31 @@
+<style>
+    /* Website background */
+
+    body {
+        background-image: url('spotifybg.jpg');
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+    }
+
+    body {
+        margin: 0;
+    }
+
+    /*  The header style */
+    .header {
+        padding: 40px;
+        text-align: center;
+        background: #8A2387;
+        font-family: sans-serif;
+        color: white;
+        background: -moz-linear-gradient(left, #8A2387 0%, #E94057 66%, #F27121 100%);
+        background: -webkit-linear-gradient(left, #8A2387 0%, #E94057 66%, #F27121 100%);
+        background: linear-gradient(to right, #8A2387 0%, #E94057 66%, #F27121 100%);
+    }
+
+     
+</style>
+
+
+

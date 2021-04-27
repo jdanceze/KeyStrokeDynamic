@@ -1,0 +1,143 @@
+<!doctype html>
+
+<style>
+  /* Website background */
+
+  body {
+      background-image: url("youtubebg.jpg");
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-size: cover;
+  }
+
+  body {
+      margin: 0;
+  }
+
+  /*  The header style */
+  .header {
+      padding: 40px;
+      text-align: center;
+      background: #8A2387;
+      font-family: sans-serif;
+      color: white;
+      background: -moz-linear-gradient(left, #8A2387 0%, #E94057 66%, #F27121 100%);
+      background: -webkit-linear-gradient(left, #8A2387 0%, #E94057 66%, #F27121 100%);
+      background: linear-gradient(to right, #8A2387 0%, #E94057 66%, #F27121 100%);
+  }
+
+
+   
+</style>
+
+
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title>Login</title>
+</head>
+<body>
+  <div class="header">
+    <h1>Welcome back to our site again !</h1>
+</div>
+<div class="container">
+    <div class = "row mt-5">
+    <form class="col-md-4 offset-md-4" method="post" action="/">
+        <% if (invalid==1){ %>
+          <div class="alert alert-danger" role="alert">
+            username or Password is Wrong!
+          </div>
+          <script>
+            window.history.pushState({},"",window.location.pathname)
+        </script>
+        <% } %>
+        <% if (invalid==2){ %>
+          <div class="alert alert-danger" role="alert">
+            Suspicious Login
+          </div>
+          <script>
+            window.history.pushState({},"",window.location.pathname)
+        </script>
+        <% } %>
+        <div class="form-group">
+          <label for="input-username">Username</label>
+          <input name="username" type="text" class="form-control" id="input-username" placeholder="Your username">
+        </div>
+        <div class="form-group">
+          <label for="input-password">Password</label>
+          <input name="password" type="password" class="form-control" id="input-password" placeholder="Password">
+        </div>
+        <input type="hidden" id="input-keyup_time" name="keyup_time" />
+        <input type="hidden" id="input-keydown_time" name="keydown_time" />
+        <input type="hidden" name="fromUrl" value="<%= fromUrl%>">
+        <button type="submit" class="btn btn-primary btn-block">Login</button>
+      </form>
+    </div>
+</div>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+        <script type="text/javascript">
+
+          $(document).ready(function () {
+              var startTime = false, endTime;
+  
+              let stack = [];
+              let start = [];
+              let end = [];
+  
+              $("#input-password").keydown(function (event) {
+                  if ((event.which >= 48 && event.which <= 90) || (event.which >= 96 && event.keyCode <= 111) || (event.which >= 186 && event.which <= 222)) {
+                      startTime = $.now();
+                      start.push({
+                          [`${event.key}`]: startTime
+                      });
+                      console.log("Start: " + JSON.stringify(start));
+
+                      $('#input-keydown_time').val(JSON.stringify(start))
+                  } else if (event.which === 8 || event.which === 46) {
+                      start.pop();
+                      console.log("Start: " + JSON.stringify(start));
+
+                      $('#input-keydown_time').val(JSON.stringify(start))
+                  }
+              });
+  
+              $("#input-password").keyup(function (event) {
+                  if ((event.which >= 48 && event.which <= 90) || (event.which >= 96 && event.keyCode <= 111) || (event.which >= 186 && event.which <= 222)) {
+                      endTime = $.now();
+                      end.push({
+                          [`${event.key}`]: endTime
+                      });
+                      console.log("End: " + JSON.stringify(end));
+                      $('#input-keyup_time').val(JSON.stringify(end))
+                  } else if (event.which === 8 || event.which === 46) {
+                      end.pop();
+                      console.log("End: " + JSON.stringify(end));
+                      $('#input-keyup_time').val(JSON.stringify(end))
+                  }
+              });
+  
+      
+          });
+  
+      </script>
+</body>
+</html>

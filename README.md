@@ -1,4 +1,4 @@
-**Please Install node js on your machine first.
+** Please Install node js on your machine first.
 1. Open ammps and import the webproject2.sql in database folder to the phpmyadmin.
 2. In Webpage folder Set the username and password in .env file for assessing the database.
 	-Now I set as the default which is user=root , password=mysql
